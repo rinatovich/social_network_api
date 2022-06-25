@@ -1,0 +1,22 @@
+{
+  "name": "api-course-project",
+  "version": "1.0.0",
+  "description": "api  for course project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rinatovich/api-course-project.git"
+  },
+  "author": "rinatovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rinatovich/api-course-project/issues"
+  },
+  "homepage": "https://github.com/rinatovich/api-course-project#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
