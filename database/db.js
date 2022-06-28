@@ -1,5 +1,5 @@
 import {Sequelize} from "sequelize";
-import {localBD} from "../settings/config.js";
+import localBD from "../settings/config.js";
 
 export const sequelize = new Sequelize(localBD.database, localBD.username, localBD.password, {
     dialect: "mysql",

@@ -1,10 +1,17 @@
 import {
-    createCollection, getAllCollectionsOfUser,
+    createCollection,
     getUser,
     removeUser,
     signUpUsers,
     updateUser,
-    createItem, getCollection, removeCollection, getUsers
+    createItem,
+    getCollection,
+    removeCollection,
+    getUsers,
+    getUserCollections,
+    updateCollection,
+    getCollectionItems,
+    getItem, removeItem, updateItem
 } from "../controllers/usersController.js";
 
 export const router = (app)=>{
@@ -14,9 +21,15 @@ export const router = (app)=>{
     app.put('/api/users/update',updateUser);
     app.delete('/api/users/remove',removeUser);
 
-    app.get('/api/collection/create',createCollection);
-    app.get('/api/users/getusercollections',getAllCollectionsOfUser);
-    app.get('/api/getCollection', getCollection);
-    app.delete('/api/removecollection',removeCollection)
-    app.get('/api/users/collecton/createitem',createItem);
+    app.post('/api/collection/create',createCollection);
+    app.get('/api/user/collections',getUserCollections);
+    app.get('/api/collection/get', getCollection);
+    app.delete('/api/collection/remove',removeCollection);
+    app.put('/api/collection/update',updateCollection);
+
+    app.post('/api/item/create',createItem);
+    app.get('/api/collection/items',getCollectionItems);
+    app.get('/api/item/get', getItem);
+    app.delete('/api/item/remove',removeItem);
+    app.put('/api/item/update',updateItem);
 }

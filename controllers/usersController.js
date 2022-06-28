@@ -1,9 +1,9 @@
 import {response} from "../settings/response.js";
-import User, {Collection} from "../database/models.js";
+import {Collection, Item, User} from "../database/models.js";
 
 const updateModelProps = (model,object,res)=>{
     model.update(object.change, {
-        where: object.user
+        where: object.object
     }).then((result) => {
         response(202,result,res);
     }).catch(err=>response(501,{message:err},res));
@@ -19,7 +19,18 @@ const getModel = (model,params, res)=>{
             }
         }).catch(err=>response(502, err,res));
 }
-
+const removeModel = (model,object,res)=>{
+    model.destroy({
+        where: object
+    }).then((result) => {
+        if(result){
+            response(200, {message: `Collection with ${Object.keys(object)[0]} ${object[Object.keys(object)[0]]} removed`}, res);
+        }
+        else{
+            response(200, {message: `Collection with  ${Object.keys(object)[0]} ${object[Object.keys(object)[0]]} not found`}, res);
+        }
+    });
+}
 
 
 export const signUpUsers = (req,res)=>{
@@ -46,36 +57,26 @@ export const updateUser = (req,res)=>{
 }
 
 export const removeUser = (req,res)=>{
-    User.destroy({
-        where: req.body
-
-    }).then((result) => {
-        if(result){
-            response(200, {message: `User with ${Object.keys(req.body)[0]} ${req.body[Object.keys(req.body)[0]]}  removed`}, res);
-        }
-        else{
-            response(501, {message: `User with ${Object.keys(req.body)[0]} ${req.body[Object.keys(req.body)[0]]} is not found`}, res);
-        }
-    }).catch(err=>{response(500, {message: err}, res)});
+    removeModel(User,req.body,res);
 }
 
 
 
 
 export const createCollection = (req,res)=>{
-    User.findByPk(req.body.id).then(user=>{
+    User.findOne({where: req.body.owner}).then(user=>{
         if(!user) {
             response(404, "User not found", res);
         }
         else{
-            user.createCollection({name:req.body.collection.name})
-                .then(result => response(200, result,res))
-                .catch(err=>response(501, {message: err}, res));
-        }
+                user.createCollection(req.body.collection)
+                    .then(result=>{response(200,result,res)})
+                    .catch(err=>{response(501, err, res)});
+            }
     }).catch(err=>response(500,{message: err},res));
 }
 
-export const getAllCollectionsOfUser = (req,res)=>{
+export const getUserCollections = (req,res)=>{
     User.findByPk(req.body.id).then(user=>{
         if(!user) response(500, {message:"user not found"},res);
         user.getCollections()
@@ -87,30 +88,50 @@ export const getAllCollectionsOfUser = (req,res)=>{
 }
 
 export const getCollection = (req,res)=>{
-    Collection.findByPk(req.body.id)
-        .then(collection=>{
-            if(!collection) {
-                response(404,"No user found", res);
-            }
-            response(200, collection, res);
-        }).catch(err=>response(500,err,res));
+    getModel(Collection,req.body,res);
 }
 
 export const removeCollection = (req,res)=>{
-    Collection.destroy({
-        where: {
-            id: req.body.id
-        }
-    }).then((result) => {
-        if(result){
-            response(200, {message: `Collection with id: ${req.body.id} removed`}, res);
-        }
-        else{
-            response(200, {message: `Collection with id: ${req.body.id} not found`}, res);
-        }
-    });
+    removeModel(Collection,req.body,res);
 }
 
-export const createItem = (req,res)=>{
+export const updateCollection = (req,res)=>{
+    updateModelProps(Collection,req.body,res);
+}
 
+
+export const createItem = (req,res)=>{
+    Collection.findOne({where: req.body.owner}).then(collection=>{
+        if(!collection) {
+            response(404, "User not found", res);
+        }
+        else{
+            collection.createItem(req.body.item)
+                .then(result=>{response(200,result,res)})
+                .catch(err=>{response(501, err, res)});
+        }
+    }).catch(err=>response(500,{message: err},res));
+}
+
+export const getCollectionItems = (req,res)=>{
+    Collection.findOne({where: req.body}).then(collection=>{
+        if(!collection) response(500, {message:"user not found"},res);
+        collection.getItems()
+            .then(result=>{
+                response(200,result,res);
+            })
+            .catch(err=>response(500,err,res));
+    }).catch(err=>response(500, err,res));
+}
+
+export const getItem = (req,res)=>{
+    getModel(Item,req.body,res);
+}
+
+export const removeItem = (req,res)=>{
+    removeModel(Item,req.body,res);
+}
+
+export const updateItem = (req,res)=>{
+    updateModelProps(Item,req.body,res);
 }

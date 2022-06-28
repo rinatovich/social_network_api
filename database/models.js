@@ -2,7 +2,7 @@ import {DataTypes, Model} from "sequelize";
 import {sequelize} from "./db.js";
 
 
-class User extends Model {}
+export class User extends Model {}
 User.init({
     id: {
         type: DataTypes.INTEGER,
@@ -27,7 +27,6 @@ User.init({
     sequelize,
     modelName: "user"
 });
-export default User;
 
 
 export class Collection extends Model {}
@@ -78,8 +77,8 @@ Item.init({
     sequelize,
     modelName: "item"
 });
-
-Collection.hasMany(Item,{ onDelete: "cascade" });
+User.hasMany(Collection,{ onDelete: null });
+Collection.hasMany(Item,{ onDelete: null });
 
 
 
