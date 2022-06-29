@@ -1,9 +1,9 @@
 
 const remoteBD = {
     host:"us-cdbr-east-05.cleardb.net",
-    username: 'bb0e141fd659ab',
-    password: 'af5c1df1',
-    database: 'heroku_3a0accdf1ff0ee1',
+    username: 'bf081b5216f4f6',
+    password: 'b5c58516',
+    database: 'heroku_b1557a3d8ac1610',
 }
 const localBD = {
     host: "localhost",
