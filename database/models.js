@@ -123,7 +123,7 @@ Item.hasMany(Comment, {onDelete: null});
 
 
 
-sequelize.sync().then(result=>{
+sequelize.sync({force:true}).then(result=>{
     console.log("DB synchronized");
 })
     .catch(err=> console.log(err));
