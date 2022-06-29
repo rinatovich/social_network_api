@@ -1,5 +1,7 @@
 import {response} from "../settings/response.js";
-import {Collection, Item, User} from "../database/models.js";
+import {Collection, Item, Like, User,Comment} from "../database/models.js";
+import {queryInterface} from "../database/db.js";
+import {DataTypes} from "sequelize";
 
 const updateModelProps = (model,object,res)=>{
     model.update(object.change, {
@@ -59,8 +61,6 @@ export const updateUser = (req,res)=>{
 export const removeUser = (req,res)=>{
     removeModel(User,req.body,res);
 }
-
-
 
 
 export const createCollection = (req,res)=>{
@@ -134,4 +134,92 @@ export const removeItem = (req,res)=>{
 
 export const updateItem = (req,res)=>{
     updateModelProps(Item,req.body,res);
+}
+
+
+export const addLike = (req,res)=>{
+    /*{user:{username:"username",userId:"userId"},item:{name||id}}*/
+    Item.findOne({where: req.body.item}).then(item=>{
+        if(!item) {
+            response(404, "User not found", res);
+        }
+        else{
+            item.createLike(req.body.user)
+                .then(result=>{response(200,result,res)})
+                .catch(err=>{response(501, err, res)});
+        }
+    }).catch(err=>response(500,{message: err},res));
+
+}
+
+export const getItemLikes = (req,res)=>{
+    Item.findOne({where: req.body}).then(item=>{
+        if(!item) response(500, {message:"user not found"},res);
+        item.getLikes()
+            .then(result=>{
+                response(200,result,res);
+            })
+            .catch(err=>response(500,err,res));
+    }).catch(err=>response(500, err,res));
+}
+
+export const getUserLikes = (req,res)=>{
+    Like.findAll({where: req.body}).then(like=>{
+        if(!like) {
+            response(500, {message:"user not found"},res);
+        }
+        else{
+            response(200,like, res);
+        }
+    }).catch(err=>response(500, err,res));
+}
+
+export const unLike = (req,res)=>{
+    removeModel(Like,req.body,res);
+}
+
+
+export const addComment = (req,res)=>{
+    /*{user:{username:"username",userId:"userId"},item:{name||id}}*/
+    Item.findOne({where: req.body.item}).then(item=>{
+        if(!item) {
+            response(404, "User not found", res);
+        }
+        else{
+            item.createComment(req.body.comment)
+                .then(result=>{response(200,result,res)})
+                .catch(err=>{response(501, err, res)});
+        }
+    }).catch(err=>response(500,{message: err},res));
+
+}
+
+export const getItemComments = (req,res)=>{
+    Item.findOne({where: req.body}).then(item=>{
+        if(!item) response(500, {message:"user not found"},res);
+        item.getComments()
+            .then(result=>{
+                response(200,result,res);
+            })
+            .catch(err=>response(500,err,res));
+    }).catch(err=>response(500, err,res));
+}
+
+export const getUserComments = (req,res)=>{
+    Comment.findAll({where: req.body}).then(like=>{
+        if(!like) {
+            response(500, {message:"user not found"},res);
+        }
+        else{
+            response(200,like, res);
+        }
+    }).catch(err=>response(500, err,res));
+}
+
+export const updateComment = (req,res)=>{
+    updateModelProps(Comment, req.body, res);
+}
+
+export const removeComment = (req,res)=>{
+    removeModel(Comment,req.body,res);
 }

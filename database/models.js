@@ -28,7 +28,6 @@ User.init({
     modelName: "user"
 });
 
-
 export class Collection extends Model {}
 Collection.init({
     id: {
@@ -77,13 +76,54 @@ Item.init({
     sequelize,
     modelName: "item"
 });
+
+export class Like extends Model {}
+Like.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
+    userId:{
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+    },
+}, {
+    sequelize,
+    modelName: "Like"
+});
+
+export class Comment extends Model {}
+Comment.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
+    userId:{
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+    },
+    text:{
+        type: DataTypes.TEXT,
+        defaultValue: "some text ..."
+    }
+}, {
+    sequelize,
+    modelName: "Comment"
+});
+
+
 User.hasMany(Collection,{ onDelete: null });
 Collection.hasMany(Item,{ onDelete: null });
+Item.hasMany(Like,{onDelete: "cascade"});
+Item.hasMany(Comment, {onDelete: null});
 
 
 
-
-sequelize.sync({alert:true}).then(result=>{
+sequelize.sync().then(result=>{
     console.log("DB synchronized");
 })
     .catch(err=> console.log(err));

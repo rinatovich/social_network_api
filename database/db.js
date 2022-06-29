@@ -1,11 +1,14 @@
 import {Sequelize} from "sequelize";
 import localBD from "../settings/config.js";
 
+
 export const sequelize = new Sequelize(localBD.database, localBD.username, localBD.password, {
     dialect: "mysql",
     host: localBD.host,
     logging: false
 });
+
+export const queryInterface = sequelize.getQueryInterface();
 
 try {
     await sequelize.authenticate();
