@@ -20,7 +20,7 @@ import {
     getItemLikes,
     addComment,
     getItemComments,
-    getUserComments, updateComment, removeComment
+    getUserComments, updateComment, removeComment, getItems, getCollections
 } from "../controllers/usersController.js";
 
 export const router = (app)=>{
@@ -33,6 +33,7 @@ export const router = (app)=>{
 
     app.post('/api/collection/create',createCollection);
     app.get('/api/collection/get', getCollection);
+    app.get('/api/collection/get/all', getCollections);
     app.delete('/api/collection/remove',removeCollection);
     app.put('/api/collection/update',updateCollection);
     app.get('/api/collection/items',getCollectionItems);
@@ -41,6 +42,7 @@ export const router = (app)=>{
     app.get('/api/item/get', getItem);
     app.delete('/api/item/remove',removeItem);
     app.put('/api/item/update',updateItem);
+    app.get('/api/item/get/all', getItems)
 
     app.post('/api/item/like/add',addLike);
     app.get('/api/item/likes',getItemLikes);

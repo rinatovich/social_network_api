@@ -71,6 +71,10 @@ Item.init({
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: 'white'
+    },
+    author:{
+        type: DataTypes.STRING,
+        allowNull: true,
     }
 }, {
     sequelize,

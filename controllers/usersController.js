@@ -87,6 +87,12 @@ export const getUserCollections = (req,res)=>{
     }).catch(err=>response(500, err,res));
 }
 
+export const getCollections = (req,res)=>{
+    Collection.findAll({raw:true}).then(collection=>{
+        response(200,collection,res)
+    }).catch(err=>response(501, err,res));
+}
+
 export const getCollection = (req,res)=>{
     getModel(Collection,req.body,res);
 }
@@ -122,6 +128,12 @@ export const getCollectionItems = (req,res)=>{
             })
             .catch(err=>response(500,err,res));
     }).catch(err=>response(500, err,res));
+}
+
+export const getItems = (req,res)=>{
+    Item.findAll({raw:true}).then(items=>{
+        response(200,items,res)
+    }).catch(err=>response(501, err,res));
 }
 
 export const getItem = (req,res)=>{
