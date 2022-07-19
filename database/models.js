@@ -20,7 +20,7 @@ User.init({
         allowNull: false
     },
     followed:{
-        type: DataTypes.BOOL,
+        type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
     password: {
