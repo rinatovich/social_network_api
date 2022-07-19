@@ -14,6 +14,15 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    imageUrl: {
+        type: DataTypes.STRING,
+        defaultValue: 'https://m.media-amazon.com/images/M/MV5BZTMxZTNhMzMtNzc5ZC00MjBlLWJlZDEtYWJjOGNlOWZlOTg4XkEyXkFqcGdeQXVyMTk4OTA2Nzg@._V1_.jpg',
+        allowNull: false
+    },
+    followed:{
+        type: DataTypes.BOOL,
+        defaultValue: false,
+    },
     password: {
         type: DataTypes.STRING,
         allowNull: false
