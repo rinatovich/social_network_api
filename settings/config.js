@@ -12,4 +12,4 @@ const localBD = {
     database: 'demo'
 }
 
-export default remoteBD;
+export default localBD;

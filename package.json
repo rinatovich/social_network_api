@@ -1,7 +1,7 @@
 {
-  "name": "api-course-project",
+  "name": "social-network",
   "version": "1.0.0",
-  "description": "api  for course project",
+  "description": "api  for social network(React)",
   "type": "module",
   "main": "index.js",
   "scripts": {

@@ -10,133 +10,38 @@ User.init({
         primaryKey: true,
         allowNull: false
     },
+    imageURL:{
+        type: DataTypes.STRING,
+        defaultValue: 'https://peliculas.fra1.digitaloceanspaces.com/actores/370/actor-mirella-cardoso-0.jpg',
+    },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
     },
-    imageUrl: {
+    email: {
         type: DataTypes.STRING,
-        defaultValue: 'https://m.media-amazon.com/images/M/MV5BZTMxZTNhMzMtNzc5ZC00MjBlLWJlZDEtYWJjOGNlOWZlOTg4XkEyXkFqcGdeQXVyMTk4OTA2Nzg@._V1_.jpg',
-        allowNull: false
+        defaultValue: 'example@test.com'
+    },
+    status:{
+        type: DataTypes.STRING,
+        defaultValue: "active"
     },
     followed:{
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'active'
-    },
+        defaultValue: false
+    }
 }, {
     sequelize,
     modelName: "user"
 });
 
-export class Collection extends Model {}
-Collection.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    theme: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'white'
-    },
-    description:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "Это крутая коллекция"
-    }
-}, {
-    sequelize,
-    modelName: "collection"
-});
 
-export class Item extends Model {}
-Item.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    tag: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: 'white'
-    },
-    author:{
-        type: DataTypes.STRING,
-        allowNull: true,
-    }
-}, {
-    sequelize,
-    modelName: "item"
-});
-
-export class Like extends Model {}
-Like.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    userId:{
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-    },
-}, {
-    sequelize,
-    modelName: "Like"
-});
-
-export class Comment extends Model {}
-Comment.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    userId:{
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-    },
-    text:{
-        type: DataTypes.TEXT,
-        defaultValue: "some text ..."
-    }
-}, {
-    sequelize,
-    modelName: "Comment"
-});
-
-
-User.hasMany(Collection,{ onDelete: null });
-Collection.hasMany(Item,{ onDelete: null });
-Item.hasMany(Like,{onDelete: "cascade"});
-Item.hasMany(Comment, {onDelete: null});
-
-
-
-sequelize.sync({alert:true}).then(result=>{
+sequelize.sync({force:true}).then(result=>{
     console.log("DB synchronized");
+    for(let i=0; i<35; i++){
+        User.create({
+            name: `user${i+1}`,
+            email: `user${i+1}@test.com`,
+        }).then(response=>{});
+    }
 })
     .catch(err=> console.log(err));
