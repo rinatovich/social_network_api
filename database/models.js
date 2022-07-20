@@ -136,7 +136,7 @@ Item.hasMany(Comment, {onDelete: null});
 
 
 
-sequelize.sync({force:true}).then(result=>{
+sequelize.sync({alert:true}).then(result=>{
     console.log("DB synchronized");
 })
     .catch(err=> console.log(err));
