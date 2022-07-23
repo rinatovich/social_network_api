@@ -82,7 +82,7 @@ export const getUsers = (req,res)=>{
 }
 
 export const getUser = (req,res)=>{
-    getModel(User,req.body,res);
+    getModel(User,req.params,res);
 }
 
 export const updateUser = (req,res)=>{
@@ -92,5 +92,4 @@ export const updateUser = (req,res)=>{
 export const removeUser = (req,res)=>{
     removeModel(User,req.body,res);
 }
-
 

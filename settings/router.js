@@ -9,8 +9,9 @@ import {
 export const router = (app)=>{
     app.get('/api/users', getUsers);
     app.post('/api/users/signup',signUpUsers);
-    app.get('/api/users/get',getUser);
+    app.get('/api/user/:id',getUser);
     app.put('/api/users/update',updateUser);
     app.delete('/api/users/remove',removeUser);
+
 
 }
