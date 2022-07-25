@@ -21,6 +21,10 @@ User.init({
         type: DataTypes.STRING,
         defaultValue: 'example@test.com'
     },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     status:{
         type: DataTypes.STRING,
         defaultValue: "active"
@@ -35,13 +39,14 @@ User.init({
 });
 
 
-sequelize.sync({force:true}).then(result=>{
+sequelize.sync({alert:true}).then(result=>{
     console.log("DB synchronized");
-    for(let i=0; i<35; i++){
-        User.create({
-            name: `user${i+1}`,
-            email: `user${i+1}@test.com`,
-        }).then(response=>{});
-    }
+    // for(let i=0; i<5; i++){
+    //     User.create({
+    //         name: `user${i+1}`,
+    //         email: `user${i+1}@test.com`,
+    //         password: `password${i+1}`
+    //     }).then(response=>{});
+    // }
 })
     .catch(err=> console.log(err));

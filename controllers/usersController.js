@@ -1,7 +1,8 @@
 import {response} from "../settings/response.js";
 import {User} from "../database/models.js";
-import {queryInterface} from "../database/db.js";
-import {DataTypes} from "sequelize";
+import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
+import config from "../settings/config.js";
 
 const updateModelProps = (model,object,res)=>{
     model.update(object.change, {
@@ -36,14 +37,37 @@ const removeModel = (model,object,res)=>{
 
 
 export const signUpUsers = (req,res)=>{
+    const salt = bcrypt.genSaltSync(19);
     User.create({
         name: req.body.name,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, salt),
+        email: req.body.email
     }).then(result=>{
         response(201,result,res);
     }).catch(err=>response(501,err,res));
 }
+export const signInUsers = (req,res)=>{
+    User.findOne({where: {name: req.body.name}})
+        .then(user=>{
+            if(!user) {
+                response(404,{message: `Model is not found`}, res);
+            }
+            else{
+                const password = bcrypt.compareSync(req.body.password, user.password);
+                if(password){
+                    const token = jwt.sign({
+                        id: user.id,
+                        name: user.name
+                    }, config.jwt, {expiresIn: 120 * 120});
 
+                    response(200,{token: `Bearer ${token}`}, res);
+                }
+                else{
+                    response(401,'User is not authorized',res);
+                }
+            }
+        }).catch(err=>response(502, err,res));
+}
 export const getUsers = (req,res)=>{
     if(req.query.length != 0){
         const pageAsNumber = Number.parseInt(req.query.page);
