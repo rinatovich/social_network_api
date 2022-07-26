@@ -60,7 +60,7 @@ export const signInUsers = (req,res)=>{
                         name: user.name
                     }, config.jwt, {expiresIn: 120 * 120});
 
-                    response(200,{token: `Bearer ${token}`}, res);
+                    response(200,{token: `Bearer ${token}`, id: user.id, name: user.name,email: user.email}, res);
                 }
                 else{
                     response(401,'User is not authorized',res);
